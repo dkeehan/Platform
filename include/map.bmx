@@ -34,7 +34,6 @@ Type tmap
 				CreateDir( "data" )
 			EndIf
 
-			DebugLog( "CREATE STREAM: "+filename )
 			Local stream:TStream = WriteFile( "data/"+filename )
 			
 			If stream
@@ -54,13 +53,7 @@ Type tmap
 				Next
 				
 				CloseStream( stream )
-				
-				DebugLog( "STREAM COMPLETE" )
-				
-			Else
-			
-				DebugLog( "STREAM FAILED" )
-				
+
 			EndIf
 			
 		EndIf
@@ -71,7 +64,6 @@ Type tmap
 	
 		If filename = "" Return
 		
-		DebugLog( "OPEN STREAM: "+filename )
 		Local stream:TStream = ReadFile( "data/"+filename )
 		Local tile:Int
 		
@@ -80,9 +72,6 @@ Type tmap
 			layers	= ReadInt( stream )
 			width 	= ReadInt( stream )
 			height 	= ReadInt( stream )
-			
-			DebugLog ("WIDTH: "+width )
-			DebugLog ("HEIGHT: "+height )
 			
 			For Local dl:Int = 0 To layers-1
 				For Local dy:Int = 0 To height-1
@@ -96,13 +85,7 @@ Type tmap
 			Next
 		
 			CloseStream( stream )
-			
-			DebugLog( "STREAM COMPLETE" )
-			
-		Else
-		
-			DebugLog( "STREAM FAILED" )
-		
+
 		EndIf
 	
 	EndMethod
@@ -150,12 +133,46 @@ Type tmap
 		SetBlend(ALPHABLEND)	
 		SetColor( 255, 255, 255 )
 		SetAlpha( 1.0 )
-		SetScale( 4, 4 )
+		SetScale( 2, 2 )
 					
 		For Local l:Int = 0 To 2
 		
-			For Local b:Int = 0 To 1
+			If l = 1
+
+				SetColor( 255, 255, 255 )			
+				SetAlpha( 0.65 )
+				SetScale( 2, 2 )
+				SetBlend( ALPHABLEND )
+	
+				For my = 0 To h+1		
+					For mx = 0 To w+1				
+						bx = Int( mx*tilesize )
+						by = Int( my*tilesize )				
+						dx = mx+mapx
+						dy = my+mapy				
+						
+						If CheckBounds( dx, 0, width ) And CheckBounds( dy, 0, height )				
+							
+							block = data[ l, dx, dy ]
+							
+							If CheckBounds( block, 1, img_tiles.frames.length )					
+	
+								If block = 1
+									DrawImage( img_outline, bx-xoffset, by-yoffset )
+								EndIf
+											
+							EndIf
+						
+						EndIf
+					
+					Next
+					
+				Next
+			
+			EndIf
 		
+			For Local b:Int = 0 To 1
+
 			For my = 0 To h+1
 			
 				For mx = 0 To w+1
@@ -172,13 +189,12 @@ Type tmap
 						If CheckBounds( block, 1, img_tiles.frames.length )
 						
 							Select b
-							
-							
+													
 							Case 0
 							
 								SetColor( 255, 255, 255 )			
 								SetAlpha( 1.0 )
-								SetScale( 4, 4 )
+								SetScale( 2, 2 )
 								SetBlend(ALPHABLEND)
 
 								DrawImage( img_tiles, bx-xoffset, by-yoffset, block )
@@ -191,9 +207,10 @@ Type tmap
 								EndIf
 							
 							Case 1
+							
 								SetColor( 245, 245, 255 )			
 								SetAlpha( 1.0 )
-								SetScale( 4, 4 )
+								SetScale( 2, 2 )
 								SetBlend(LIGHTBLEND)
 								DrawImage( img_bloom, bx-xoffset, by-yoffset, block )
 												
