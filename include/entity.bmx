@@ -4,15 +4,12 @@ Type tentity
 
 	Global list:TList
 
-	Field x:Int
-	Field y:Int
+	Field x:Int, y:Int
+	Field width:Int, height:Int
+		
+	Field pvx:Int, pvy:Int
 	
 	Field xac:Float, yac:Float
-	
-	Field width:Int
-	Field height:Int
-	
-	Field parent:tmap
 	
 	Field facing:Int
 	Field jumping:Int
@@ -20,6 +17,8 @@ Type tentity
 	
 	Field allow_left:Int
 	Field allow_right:Int
+	
+	Field parent:tmap
 
 	Method New()
 	EndMethod
@@ -39,11 +38,17 @@ Type tentity
 	
 	Method update()
 	
-		Local below:Int, above:Int
+		pvx = x
+		pvy = y	
 		
-		xac:*0.90
-		If Abs(xac) < 0.1 xac = 0
+		Local pv_yac:Float = yac
+		
+		Local pv_falling:Int = falling
+		Local pv_jumping:Int = jumping
+		
 		x:+xac
+		xac:*0.9
+		If Abs(xac) < 0.25 xac = 0
 		
 		If xac<>0 facing = Sgn(xac)		
 
@@ -51,27 +56,26 @@ Type tentity
 			
 		If jumping
 			yac:*0.90
-			If Abs(yac) < 0.1 
+			If Abs(yac) < 0.25
 				yac = 0
 				jumping = False
 			EndIf
 			check_above()
 		Else
-			falling = check_below(False)
+			falling = check_below(True)
 			If falling
 				yac:+0.25
 				If yac > 32.0 yac = 32.0
 			Else
-				yac = 0		
-				y = (Int((y+1)/64)*64)-1
+				If pv_falling
+					If pv_yac >= 10 yac = -0.5
+					jumping = True
+				EndIf
 			EndIf	
 		EndIf
 		
 		allow_left	= check_left()
-		allow_right	= check_right()				
-
-		'If xac < 0 allow_left = check_left()
-		'If xac > 0 allow_right = check_right()				
+		allow_right	= check_right()			
 
 	EndMethod
 	
