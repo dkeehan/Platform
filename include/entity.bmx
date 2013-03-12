@@ -249,7 +249,7 @@ Type tplayer Extends tentity
 	
 	Method update()
 		Super.update()
-		rot = (rot+0.25) Mod(360)
+		'rot = (rot+0.25) Mod(360)
 	EndMethod
 	
 	Method draw( xoffset:Float, yoffset:Float )
@@ -271,7 +271,7 @@ Type tplayer Extends tentity
 			EndIf
 			
 			SetRotation( rot )
-			DrawImage( img_gun, xx+21, yy-11, 0 )
+			DrawImage( img_gun, xx+21, yy-11, 1 )
 			SetRotation( 0 )
 			
 			SetScale( 1, 1 )

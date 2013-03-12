@@ -3,7 +3,7 @@ Function editor()
 	Local done:Int = False
 	
 	Local grid:tgrid = tgrid.Create( 64, GRID_DOUBLEDASH )
-	SetGridColor( grid, 255, 64, 64, 0.25 )
+	SetGridColor( grid, 0, 0, 0, 0.5 )
 	
 	Local coords:tfloatcontrol = tfloatcontrol.Create()
 	SetControlBounds( coords, 0, 6400-GraphicsWidth(), 0, 6400-(GraphicsHeight()-64) )
