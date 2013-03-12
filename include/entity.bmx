@@ -266,13 +266,11 @@ Type tplayer Extends tentity
 			
 			If facing = -1
 				DrawImage( img_player, xx, yy, 2 )
+				DrawImage( img_gun, xx+11, yy-11, 9 )
 			Else
 				DrawImage( img_player, xx, yy, 1 )
+				DrawImage( img_gun, xx+21, yy-11, 1 )
 			EndIf
-			
-			SetRotation( rot )
-			DrawImage( img_gun, xx+21, yy-11, 1 )
-			SetRotation( 0 )
 			
 			SetScale( 1, 1 )
 			
