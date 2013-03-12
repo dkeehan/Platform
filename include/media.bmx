@@ -12,7 +12,7 @@ Global img_noise:TImage
 Global img_player:TImage
 Global img_gun:TImage
 
-Global fx_bloom:TImage
+Global img_status:TImage
 
 Function init_media()
 
@@ -33,9 +33,9 @@ Function init_media()
 	img_gradient1 = LoadImage( "media/image/gradient1.png", FILTEREDIMAGE|MIPMAPPEDIMAGE )
 	
 	img_noise = LoadAnimImage( "media/image/noise.png", 64, 64, 0, 64, FILTEREDIMAGE|MIPMAPPEDIMAGE )
-
-	fx_bloom = CreateImage( (GraphicsWidth()/4)+32, (GraphicsHeight()/4)+32, 1, FILTEREDIMAGE|MIPMAPPEDIMAGE|MASKEDIMAGE )
 	
+	img_status	= LoadImage( "media/image/status.png", 0 )
+
 EndFunction
 
 Function free_media()

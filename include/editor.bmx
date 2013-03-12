@@ -104,7 +104,15 @@ Function editor()
 			SetAlpha( 0.5 )
 			SetBlend( ALPHABLEND )
 		
-			DrawImageRect( img_vignette2, 0, 0, GraphicsWidth(), GraphicsHeight() )				
+			DrawImageRect( img_vignette2, 0, 0, GraphicsWidth(), GraphicsHeight() )
+			
+			SetColor( 255, 255, 255 )
+			SetAlpha( 0.75 )
+			SetScale( 2, 2 )
+			
+			DrawImage( img_status, 16, GraphicsHeight()-48 )			
+
+			SetScale( 1, 1 )
 
 			SetAlpha( 1.0 )
 			SetBlend( ALPHABLEND )
