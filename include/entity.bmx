@@ -225,6 +225,9 @@ EndType
 
 Type tplayer Extends tentity
 
+	Field gun:Int
+	Field rot:Float
+
 	Method New()
 		If list = Null list = New TList
 		list.addlast Self
@@ -246,6 +249,7 @@ Type tplayer Extends tentity
 	
 	Method update()
 		Super.update()
+		rot = (rot+0.25) Mod(360)
 	EndMethod
 	
 	Method draw( xoffset:Float, yoffset:Float )
@@ -253,7 +257,7 @@ Type tplayer Extends tentity
 		Local xx:Float = x - xoffset
 		Local yy:Float = y - yoffset
 
-		If RectsOverlap( xx, yy, width, height, 0, 0, GraphicsWidth(), GraphicsHeight() )
+		If RectsOverlap( xx, yy-height, width, height, 0, 0, GraphicsWidth(), GraphicsHeight() )
 			
 			SetColor(255,255,255)
 			SetAlpha(1.0)
@@ -265,6 +269,11 @@ Type tplayer Extends tentity
 			Else
 				DrawImage( img_player, xx, yy, 1 )
 			EndIf
+			
+			SetRotation( rot )
+			DrawImage( img_gun, xx+21, yy-11, 0 )
+			SetRotation( 0 )
+			
 			SetScale( 1, 1 )
 			
 			Return True

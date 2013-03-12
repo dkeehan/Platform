@@ -41,6 +41,7 @@
 	extrn	_brl_max2d_CreateImage
 	extrn	_brl_max2d_LoadAnimImage
 	extrn	_brl_max2d_LoadImage
+	extrn	_brl_max2d_MidHandleImage
 	extrn	_brl_max2d_SetImageHandle
 	extrn	_brl_max2d_SetMaskColor
 	public	__bb_main
@@ -48,8 +49,10 @@
 	public	_bb_fx_bloom
 	public	_bb_img_back
 	public	_bb_img_bloom
-	public	_bb_img_chalk
 	public	_bb_img_gradient1
+	public	_bb_img_gun
+	public	_bb_img_noise
+	public	_bb_img_player
 	public	_bb_img_tiles
 	public	_bb_img_vignette1
 	public	_bb_img_vignette2
@@ -59,17 +62,17 @@ __bb_main:
 	push	ebp
 	mov	ebp,esp
 	push	ebx
-	cmp	dword [_56],0
-	je	_57
+	cmp	dword [_60],0
+	je	_61
 	mov	eax,0
 	pop	ebx
 	mov	esp,ebp
 	pop	ebp
 	ret
-_57:
-	mov	dword [_56],1
+_61:
+	mov	dword [_60],1
 	push	ebp
-	push	_44
+	push	_47
 	call	dword [_bbOnDebugEnterScope]
 	add	esp,8
 	call	___bb_blitz_blitz
@@ -103,10 +106,7 @@ _57:
 	call	___bb_freeprocess_freeprocess
 	call	___bb_glew_glew
 	call	___bb_macos_macos
-	push	_35
-	call	dword [_bbOnDebugEnterStm]
-	add	esp,4
-	push	_37
+	push	_36
 	call	dword [_bbOnDebugEnterStm]
 	add	esp,4
 	push	_38
@@ -127,9 +127,18 @@ _57:
 	push	_43
 	call	dword [_bbOnDebugEnterStm]
 	add	esp,4
+	push	_44
+	call	dword [_bbOnDebugEnterStm]
+	add	esp,4
+	push	_45
+	call	dword [_bbOnDebugEnterStm]
+	add	esp,4
+	push	_46
+	call	dword [_bbOnDebugEnterStm]
+	add	esp,4
 	mov	ebx,0
-	jmp	_29
-_29:
+	jmp	_30
+_30:
 	call	dword [_bbOnDebugLeaveScope]
 	mov	eax,ebx
 	pop	ebx
@@ -141,10 +150,10 @@ _bb_init_media:
 	mov	ebp,esp
 	push	ebx
 	push	ebp
-	push	_100
+	push	_110
 	call	dword [_bbOnDebugEnterScope]
 	add	esp,8
-	push	_58
+	push	_62
 	call	dword [_bbOnDebugEnterStm]
 	add	esp,4
 	push	255
@@ -152,7 +161,7 @@ _bb_init_media:
 	push	255
 	call	_brl_max2d_SetMaskColor
 	add	esp,12
-	push	_59
+	push	_63
 	call	dword [_bbOnDebugEnterStm]
 	add	esp,4
 	push	1
@@ -167,16 +176,16 @@ _bb_init_media:
 	mov	ebx,eax
 	mov	eax,dword [_bb_img_tiles]
 	dec	dword [eax+4]
-	jnz	_63
+	jnz	_67
 	push	eax
 	call	_bbGCFree
 	add	esp,4
-_63:
+_67:
 	mov	dword [_bb_img_tiles],ebx
-	push	_64
+	push	_68
 	call	dword [_bbOnDebugEnterStm]
 	add	esp,4
-	push	1
+	push	7
 	push	256
 	push	0
 	push	16
@@ -188,55 +197,69 @@ _63:
 	mov	ebx,eax
 	mov	eax,dword [_bb_img_bloom]
 	dec	dword [eax+4]
-	jnz	_68
+	jnz	_72
 	push	eax
 	call	_bbGCFree
 	add	esp,4
-_68:
+_72:
 	mov	dword [_bb_img_bloom],ebx
-	push	_69
+	push	_73
 	call	dword [_bbOnDebugEnterStm]
 	add	esp,4
+	push	1
+	push	64
 	push	0
+	push	16
+	push	16
 	push	_24
-	call	_brl_max2d_LoadImage
-	add	esp,8
+	call	_brl_max2d_LoadAnimImage
+	add	esp,24
 	inc	dword [eax+4]
 	mov	ebx,eax
-	mov	eax,dword [_bb_img_back]
+	mov	eax,dword [_bb_img_player]
 	dec	dword [eax+4]
-	jnz	_73
+	jnz	_77
 	push	eax
 	call	_bbGCFree
 	add	esp,4
-_73:
-	mov	dword [_bb_img_back],ebx
-	push	_74
+_77:
+	mov	dword [_bb_img_player],ebx
+	push	_78
 	call	dword [_bbOnDebugEnterStm]
 	add	esp,4
+	push	1097859072
 	push	0
-	push	_25
-	call	_brl_max2d_LoadImage
-	add	esp,8
-	inc	dword [eax+4]
-	mov	ebx,eax
-	mov	eax,dword [_bb_img_chalk]
-	dec	dword [eax+4]
-	jnz	_78
-	push	eax
-	call	_bbGCFree
-	add	esp,4
-_78:
-	mov	dword [_bb_img_chalk],ebx
+	push	dword [_bb_img_player]
+	call	_brl_max2d_SetImageHandle
+	add	esp,12
 	push	_79
 	call	dword [_bbOnDebugEnterStm]
 	add	esp,4
-	push	1073741824
-	push	1073741824
-	push	dword [_bb_img_chalk]
-	call	_brl_max2d_SetImageHandle
-	add	esp,12
-	push	_80
+	push	1
+	push	16
+	push	0
+	push	32
+	push	32
+	push	_25
+	call	_brl_max2d_LoadAnimImage
+	add	esp,24
+	inc	dword [eax+4]
+	mov	ebx,eax
+	mov	eax,dword [_bb_img_gun]
+	dec	dword [eax+4]
+	jnz	_83
+	push	eax
+	call	_bbGCFree
+	add	esp,4
+_83:
+	mov	dword [_bb_img_gun],ebx
+	push	_84
+	call	dword [_bbOnDebugEnterStm]
+	add	esp,4
+	push	dword [_bb_img_gun]
+	call	_brl_max2d_MidHandleImage
+	add	esp,4
+	push	_85
 	call	dword [_bbOnDebugEnterStm]
 	add	esp,4
 	push	6
@@ -247,13 +270,13 @@ _78:
 	mov	ebx,eax
 	mov	eax,dword [_bb_img_vignette1]
 	dec	dword [eax+4]
-	jnz	_84
+	jnz	_89
 	push	eax
 	call	_bbGCFree
 	add	esp,4
-_84:
+_89:
 	mov	dword [_bb_img_vignette1],ebx
-	push	_85
+	push	_90
 	call	dword [_bbOnDebugEnterStm]
 	add	esp,4
 	push	6
@@ -264,13 +287,13 @@ _84:
 	mov	ebx,eax
 	mov	eax,dword [_bb_img_vignette2]
 	dec	dword [eax+4]
-	jnz	_89
+	jnz	_94
 	push	eax
 	call	_bbGCFree
 	add	esp,4
-_89:
+_94:
 	mov	dword [_bb_img_vignette2],ebx
-	push	_90
+	push	_95
 	call	dword [_bbOnDebugEnterStm]
 	add	esp,4
 	push	6
@@ -281,13 +304,34 @@ _89:
 	mov	ebx,eax
 	mov	eax,dword [_bb_img_gradient1]
 	dec	dword [eax+4]
-	jnz	_94
+	jnz	_99
 	push	eax
 	call	_bbGCFree
 	add	esp,4
-_94:
+_99:
 	mov	dword [_bb_img_gradient1],ebx
-	push	_95
+	push	_100
+	call	dword [_bbOnDebugEnterStm]
+	add	esp,4
+	push	6
+	push	64
+	push	0
+	push	64
+	push	64
+	push	_29
+	call	_brl_max2d_LoadAnimImage
+	add	esp,24
+	inc	dword [eax+4]
+	mov	ebx,eax
+	mov	eax,dword [_bb_img_noise]
+	dec	dword [eax+4]
+	jnz	_104
+	push	eax
+	call	_bbGCFree
+	add	esp,4
+_104:
+	mov	dword [_bb_img_noise],ebx
+	push	_105
 	call	dword [_bbOnDebugEnterStm]
 	add	esp,4
 	push	7
@@ -312,15 +356,15 @@ _94:
 	mov	ebx,eax
 	mov	eax,dword [_bb_fx_bloom]
 	dec	dword [eax+4]
-	jnz	_99
+	jnz	_109
 	push	eax
 	call	_bbGCFree
 	add	esp,4
-_99:
+_109:
 	mov	dword [_bb_fx_bloom],ebx
 	mov	ebx,0
-	jmp	_31
-_31:
+	jmp	_32
+_32:
 	call	dword [_bbOnDebugLeaveScope]
 	mov	eax,ebx
 	pop	ebx
@@ -332,12 +376,12 @@ _bb_free_media:
 	mov	ebp,esp
 	push	ebx
 	push	ebp
-	push	_102
+	push	_112
 	call	dword [_bbOnDebugEnterScope]
 	add	esp,8
 	mov	ebx,0
-	jmp	_33
-_33:
+	jmp	_34
+_34:
 	call	dword [_bbOnDebugLeaveScope]
 	mov	eax,ebx
 	pop	ebx
@@ -346,149 +390,175 @@ _33:
 	ret
 	section	"data" data writeable align 8
 	align	4
-_56:
+_60:
 	dd	0
-_45:
+_48:
 	db	"media",0
-_46:
+_49:
 	db	"img_tiles",0
-_47:
+_50:
 	db	":TImage",0
 	align	4
 _bb_img_tiles:
 	dd	_bbNullObject
-_48:
+_51:
 	db	"img_bloom",0
 	align	4
 _bb_img_bloom:
 	dd	_bbNullObject
-_49:
+_52:
 	db	"img_back",0
 	align	4
 _bb_img_back:
 	dd	_bbNullObject
-_50:
-	db	"img_chalk",0
-	align	4
-_bb_img_chalk:
-	dd	_bbNullObject
-_51:
+_53:
 	db	"img_gradient1",0
-_52:
-	db	":timage",0
 	align	4
 _bb_img_gradient1:
 	dd	_bbNullObject
-_53:
+_54:
 	db	"img_vignette1",0
 	align	4
 _bb_img_vignette1:
 	dd	_bbNullObject
-_54:
+_55:
 	db	"img_vignette2",0
 	align	4
 _bb_img_vignette2:
 	dd	_bbNullObject
-_55:
+_56:
+	db	"img_noise",0
+	align	4
+_bb_img_noise:
+	dd	_bbNullObject
+_57:
+	db	"img_player",0
+	align	4
+_bb_img_player:
+	dd	_bbNullObject
+_58:
+	db	"img_gun",0
+	align	4
+_bb_img_gun:
+	dd	_bbNullObject
+_59:
 	db	"fx_bloom",0
 	align	4
 _bb_fx_bloom:
 	dd	_bbNullObject
 	align	4
-_44:
+_47:
 	dd	1
-	dd	_45
-	dd	4
-	dd	_46
-	dd	_47
-	dd	_bb_img_tiles
-	dd	4
 	dd	_48
-	dd	_47
-	dd	_bb_img_bloom
 	dd	4
 	dd	_49
-	dd	_47
-	dd	_bb_img_back
-	dd	4
 	dd	_50
-	dd	_47
-	dd	_bb_img_chalk
+	dd	_bb_img_tiles
 	dd	4
 	dd	_51
+	dd	_50
+	dd	_bb_img_bloom
+	dd	4
 	dd	_52
-	dd	_bb_img_gradient1
+	dd	_50
+	dd	_bb_img_back
 	dd	4
 	dd	_53
-	dd	_47
-	dd	_bb_img_vignette1
+	dd	_50
+	dd	_bb_img_gradient1
 	dd	4
 	dd	_54
-	dd	_47
-	dd	_bb_img_vignette2
+	dd	_50
+	dd	_bb_img_vignette1
 	dd	4
 	dd	_55
-	dd	_47
+	dd	_50
+	dd	_bb_img_vignette2
+	dd	4
+	dd	_56
+	dd	_50
+	dd	_bb_img_noise
+	dd	4
+	dd	_57
+	dd	_50
+	dd	_bb_img_player
+	dd	4
+	dd	_58
+	dd	_50
+	dd	_bb_img_gun
+	dd	4
+	dd	_59
+	dd	_50
 	dd	_bb_fx_bloom
 	dd	0
-_36:
+_37:
 	db	"D:/My Documents/Programming/Blitz/Platform2/include/media.bmx",0
 	align	4
-_35:
-	dd	_36
+_36:
+	dd	_37
 	dd	1
-	dd	1
-	align	4
-_37:
-	dd	_36
-	dd	2
 	dd	1
 	align	4
 _38:
-	dd	_36
-	dd	3
+	dd	_37
+	dd	2
 	dd	1
 	align	4
 _39:
-	dd	_36
-	dd	4
+	dd	_37
+	dd	3
 	dd	1
 	align	4
 _40:
-	dd	_36
-	dd	6
+	dd	_37
+	dd	5
 	dd	1
 	align	4
 _41:
-	dd	_36
-	dd	8
+	dd	_37
+	dd	7
 	dd	1
 	align	4
 _42:
-	dd	_36
-	dd	9
+	dd	_37
+	dd	8
 	dd	1
 	align	4
 _43:
-	dd	_36
-	dd	11
+	dd	_37
+	dd	10
 	dd	1
-_101:
+	align	4
+_44:
+	dd	_37
+	dd	12
+	dd	1
+	align	4
+_45:
+	dd	_37
+	dd	13
+	dd	1
+	align	4
+_46:
+	dd	_37
+	dd	15
+	dd	1
+_111:
 	db	"init_media",0
 	align	4
-_100:
+_110:
 	dd	1
-	dd	_101
+	dd	_111
 	dd	0
 	align	4
-_58:
-	dd	_36
-	dd	15
+_62:
+	dd	_37
+	dd	19
 	dd	2
 	align	4
-_59:
-	dd	_36
-	dd	16
+_63:
+	dd	_37
+	dd	21
 	dd	2
 	align	4
 _22:
@@ -498,9 +568,9 @@ _22:
 	dw	109,101,100,105,97,47,105,109,97,103,101,47,116,105,108,101
 	dw	115,46,112,110,103
 	align	4
-_64:
-	dd	_36
-	dd	17
+_68:
+	dd	_37
+	dd	22
 	dd	2
 	align	4
 _23:
@@ -510,38 +580,43 @@ _23:
 	dw	109,101,100,105,97,47,105,109,97,103,101,47,116,105,108,101
 	dw	115,95,98,108,111,111,109,46,112,110,103
 	align	4
-_69:
-	dd	_36
-	dd	19
+_73:
+	dd	_37
+	dd	24
 	dd	2
 	align	4
 _24:
 	dd	_bbStringClass
 	dd	2147483647
-	dd	26
-	dw	109,101,100,105,97,47,105,109,97,103,101,47,98,97,99,107
-	dw	103,114,111,117,110,100,46,112,110,103
+	dd	22
+	dw	109,101,100,105,97,47,105,109,97,103,101,47,112,108,97,121
+	dw	101,114,46,112,110,103
 	align	4
-_74:
-	dd	_36
-	dd	20
+_78:
+	dd	_37
+	dd	25
+	dd	2
+	align	4
+_79:
+	dd	_37
+	dd	27
 	dd	2
 	align	4
 _25:
 	dd	_bbStringClass
 	dd	2147483647
-	dd	21
-	dw	109,101,100,105,97,47,105,109,97,103,101,47,99,104,97,108
-	dw	107,46,112,110,103
+	dd	20
+	dw	109,101,100,105,97,47,105,109,97,103,101,47,103,117,110,115
+	dw	46,112,110,103
 	align	4
-_79:
-	dd	_36
-	dd	21
+_84:
+	dd	_37
+	dd	28
 	dd	2
 	align	4
-_80:
-	dd	_36
-	dd	23
+_85:
+	dd	_37
+	dd	30
 	dd	2
 	align	4
 _26:
@@ -551,9 +626,9 @@ _26:
 	dw	109,101,100,105,97,47,105,109,97,103,101,47,118,105,103,110
 	dw	101,116,116,101,49,46,112,110,103
 	align	4
-_85:
-	dd	_36
-	dd	24
+_90:
+	dd	_37
+	dd	31
 	dd	2
 	align	4
 _27:
@@ -563,9 +638,9 @@ _27:
 	dw	109,101,100,105,97,47,105,109,97,103,101,47,118,105,103,110
 	dw	101,116,116,101,50,46,112,110,103
 	align	4
-_90:
-	dd	_36
-	dd	26
+_95:
+	dd	_37
+	dd	33
 	dd	2
 	align	4
 _28:
@@ -575,14 +650,26 @@ _28:
 	dw	109,101,100,105,97,47,105,109,97,103,101,47,103,114,97,100
 	dw	105,101,110,116,49,46,112,110,103
 	align	4
-_95:
-	dd	_36
-	dd	28
+_100:
+	dd	_37
+	dd	35
 	dd	2
-_103:
+	align	4
+_29:
+	dd	_bbStringClass
+	dd	2147483647
+	dd	21
+	dw	109,101,100,105,97,47,105,109,97,103,101,47,110,111,105,115
+	dw	101,46,112,110,103
+	align	4
+_105:
+	dd	_37
+	dd	37
+	dd	2
+_113:
 	db	"free_media",0
 	align	4
-_102:
+_112:
 	dd	1
-	dd	_103
+	dd	_113
 	dd	0

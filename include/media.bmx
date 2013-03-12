@@ -10,6 +10,7 @@ Global img_vignette2:TImage
 Global img_noise:TImage
 
 Global img_player:TImage
+Global img_gun:TImage
 
 Global fx_bloom:TImage
 
@@ -22,6 +23,9 @@ Function init_media()
 		
 	img_player = LoadAnimImage( "media/image/player.png", 16, 16, 0, 64, MASKEDIMAGE )
 	SetImageHandle( img_player, 0, 15 )
+	
+	img_gun = LoadAnimImage( "media/image/guns.png", 32, 32, 0, 16, MASKEDIMAGE )
+	MidHandleImage( img_gun )	
 	
 	img_vignette1 = LoadImage( "media/image/vignette1.png", FILTEREDIMAGE|MIPMAPPEDIMAGE )
 	img_vignette2 = LoadImage( "media/image/vignette2.png", FILTEREDIMAGE|MIPMAPPEDIMAGE )
