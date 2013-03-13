@@ -98,6 +98,7 @@ Function editor()
 
 			map.draw(Int(mapx), Int(mapy))
 			
+			tparticle.updateall( Int(mapx), Int(mapy) )			
 			tentity.updateall( Int(mapx), Int(mapy) )
 
 			SetColor( 0, 0, 0 )

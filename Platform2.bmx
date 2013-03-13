@@ -3,16 +3,6 @@ Import dave.floatcontrol
 Import dave.myfunctions
 Import dave.math
 
-Rem
-
-	Controls:
-
-	z - left
-	x - right
-	j - jump
-
-EndRem
-
 SetGraphicsDriver GLMax2DDriver()
 
 Include "include/media.bmx"
@@ -21,6 +11,7 @@ Include "include/editor.bmx"
 Include "include/game.bmx"
 Include "include/entity.bmx"
 Include "include/tiledata.bmx"
+Include "include/particles.bmx"
 
 Graphics( 800, 600, 32 )
 

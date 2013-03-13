@@ -65,10 +65,15 @@ Type tentity
 			falling = check_below(True)
 			If falling
 				yac:+0.25
-				If yac > 32.0 yac = 32.0
+				If Abs(yac) > 16.0 yac = 16.0*Sgn(yac)
 			Else
 				If pv_falling
-					If pv_yac >= 10 yac = -0.5
+					If pv_yac >= 10 
+						yac = -0.5
+						For Local p:Int = 0 To 9
+							tdust.Create( (x+p)+3, y, Rnd(-3.0,3.0), Rnd(-4.0, -8.0 ) )
+						Next
+					EndIf
 					jumping = True
 				EndIf
 			EndIf	
