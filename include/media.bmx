@@ -15,6 +15,8 @@ Global img_gun:TImage
 Global img_status:TImage
 Global img_outline:TImage
 
+Global part_dust:TImage
+
 Function init_media()
 
 	SetMaskColor( 255,0,255 )
@@ -39,6 +41,9 @@ Function init_media()
 	
 	img_outline	= LoadImage( "media/image/outline.png", MASKEDIMAGE )
 	SetImageHandle( img_outline, 1, 1 )
+	
+	part_dust	= LoadImage( "media/image/particles/dust.png", MASKEDIMAGE )
+	MidHandleImage( part_dust )
 
 EndFunction
 

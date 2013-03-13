@@ -137,40 +137,6 @@ Type tmap
 					
 		For Local l:Int = 0 To 2
 		
-			If l = 1
-
-				SetColor( 255, 255, 255 )			
-				SetAlpha( 0.65 )
-				SetScale( 2, 2 )
-				SetBlend( ALPHABLEND )
-	
-				For my = 0 To h+1		
-					For mx = 0 To w+1				
-						bx = Int( mx*tilesize )
-						by = Int( my*tilesize )				
-						dx = mx+mapx
-						dy = my+mapy				
-						
-						If CheckBounds( dx, 0, width ) And CheckBounds( dy, 0, height )				
-							
-							block = data[ l, dx, dy ]
-							
-							If CheckBounds( block, 1, img_tiles.frames.length )					
-	
-								If block = 1
-									DrawImage( img_outline, bx-xoffset, by-yoffset )
-								EndIf
-											
-							EndIf
-						
-						EndIf
-					
-					Next
-					
-				Next
-			
-			EndIf
-		
 			For Local b:Int = 0 To 1
 
 			For my = 0 To h+1

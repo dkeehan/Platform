@@ -13,7 +13,7 @@ Include "include/entity.bmx"
 Include "include/tiledata.bmx"
 Include "include/particles.bmx"
 
-Graphics( 800, 600, 32 )
+Graphics( 800, 600)', 32 )
 
 Global gfxw:Int = GraphicsWidth()
 Global gfxh:Int = GraphicsHeight()

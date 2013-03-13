@@ -71,7 +71,7 @@ Type tentity
 					If pv_yac >= 10 
 						yac = -0.5
 						For Local p:Int = 0 To 9
-							tdust.Create( (x+p)+3, y, Rnd(-3.0,3.0), Rnd(-4.0, -8.0 ) )
+							tdust.Create( (x+p)+3, y, Rnd(-3.0,3.0)+(xac*-1), Rnd(-4.0, -8.0 ) )
 						Next
 					EndIf
 					jumping = True
