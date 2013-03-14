@@ -96,10 +96,14 @@ Function editor()
 
 			DrawImageRect( img_gradient1, 0, 0, gfxw, gfxh )
 			
-			SetColor( 255, 255, 255 )
+			SetColor( 25, 155, 255 )
 			SetAlpha( 1.0 )
 			
 			DrawImageRect( img_back, 0, 0, gfxw, gfxh )
+			
+			SetColor( 32, 32, 32 )
+			SetAlpha( 0.95 )
+			DrawImageRect( img_vignette1, 0, 0, gfxw, gfxh )
 
 			map.draw(Int(mapx), Int(mapy))
 			
