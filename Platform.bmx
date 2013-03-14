@@ -12,8 +12,9 @@ Include "include/game.bmx"
 Include "include/entity.bmx"
 Include "include/tiledata.bmx"
 Include "include/particles.bmx"
+Include "include/guns.bmx"
 
-Graphics( 800, 600)', 32 )
+Graphics( 800, 600, 32 )
 
 Global gfxw:Int = GraphicsWidth()
 Global gfxh:Int = GraphicsHeight()

@@ -1,5 +1,3 @@
-Global debugx:Float, debugy:Float
-
 Type tentity
 
 	Global list:TList
@@ -27,8 +25,6 @@ Type tentity
 	EndMethod	
 	
 	Function updateall( xoffset:Float, yoffset:Float )
-		debugx = xoffset
-		debugy = yoffset
 		If list = Null Return
 		For Local e:tentity = EachIn list
 			e.update()
@@ -45,13 +41,7 @@ Type tentity
 		
 		Local pv_falling:Int = falling
 		Local pv_jumping:Int = jumping
-		
-		x:+xac
-		xac:*0.9
-		If Abs(xac) < 0.25 xac = 0
-		
-		If xac<>0 facing = Sgn(xac)		
-
+			
 		y:+yac
 			
 		If jumping
@@ -78,6 +68,12 @@ Type tentity
 				EndIf
 			EndIf	
 		EndIf
+
+		x:+xac
+		xac:*0.9
+		If Abs(xac) < 0.25 xac = 0
+		
+		If xac<>0 facing = Sgn(xac)	
 		
 		allow_left	= check_left()
 		allow_right	= check_right()			
@@ -258,7 +254,6 @@ Type tplayer Extends tentity
 	
 	Method update()
 		Super.update()
-		'rot = (rot+0.25) Mod(360)
 	EndMethod
 	
 	Method draw( xoffset:Float, yoffset:Float )
