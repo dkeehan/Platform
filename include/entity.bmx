@@ -63,6 +63,7 @@ Type tentity
 						For Local p:Int = 0 To 9
 							tdust.Create( (x+p)+3, y, Rnd(-3.0,3.0)+(xac*-1), Rnd(-4.0, -8.0 ) )
 						Next
+						xac = 0
 					EndIf
 					jumping = True
 				EndIf
@@ -104,7 +105,7 @@ Type tentity
 			If bl1 <> 1 Or bl2 <> 1	
 				If reset
 					xac = 0
-					x = (((xx1/64)+1)*64)
+					x = (((xx1/64)+1)*64)+1
 				EndIf
 				Return False
 			EndIf	

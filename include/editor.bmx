@@ -25,11 +25,11 @@ Function editor()
 	Repeat
 	
 		If KeyDown( KEY_Z )
-			If player1.allow_left player1.xac = -4.0
+			If player1.allow_left player1.xac:-0.5
 		EndIf
 		
 		If KeyDown( KEY_X )
-			If player1.allow_right player1.xac = 4.0		
+			If player1.allow_right player1.xac:+0.5		
 		EndIf
 		
 		If KeyHit(KEY_J)
@@ -95,6 +95,11 @@ Function editor()
 			SetAlpha( 0.75 )
 
 			DrawImageRect( img_gradient1, 0, 0, gfxw, gfxh )
+			
+			SetColor( 255, 255, 255 )
+			SetAlpha( 1.0 )
+			
+			DrawImageRect( img_back, 0, 0, gfxw, gfxh )
 
 			map.draw(Int(mapx), Int(mapy))
 			
@@ -105,13 +110,13 @@ Function editor()
 			SetAlpha( 0.5 )
 			SetBlend( ALPHABLEND )
 		
-			DrawImageRect( img_vignette2, 0, 0, GraphicsWidth(), GraphicsHeight() )
+			DrawImageRect( img_vignette2, 0, 0, gfxw, gfxh )
 			
 			SetColor( 255, 255, 255 )
 			SetAlpha( 0.75 )
 			SetScale( 2, 2 )
 			
-			DrawImage( img_status, 16, GraphicsHeight()-48 )			
+			DrawImage( img_status, 16, gfxh-48 )			
 
 			SetScale( 1, 1 )
 

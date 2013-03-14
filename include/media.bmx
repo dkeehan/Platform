@@ -21,6 +21,8 @@ Function init_media()
 
 	SetMaskColor( 255,0,255 )
 	
+	img_back	= LoadImage( "media/image/background.png", 0 )
+	
 	img_tiles = LoadAnimImage( "media/image/tiles.png", 32, 32, 0, 256, MASKEDIMAGE )
 	img_bloom = LoadAnimImage( "media/image/tiles_bloom.png", 32, 32, 0, 256, MASKEDIMAGE|FILTEREDIMAGE|MIPMAPPEDIMAGE )
 		
