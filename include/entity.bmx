@@ -1,6 +1,11 @@
+Include "entity/player.bmx"
+Include "entity/crate.bmx"
+
 Type tentity
 
 	Global list:TList
+	
+	Field id:String
 
 	Field x:Int, y:Int
 	Field width:Int, height:Int
@@ -12,16 +17,25 @@ Type tentity
 	Field facing:Int
 	Field jumping:Int
 	Field falling:Int
+	Field moving:Int
+	
+	Field holding:tentity
 	
 	Field allow_left:Int
 	Field allow_right:Int
 	
+	Field pushable:Int = False
+	
 	Field parent:tmap
 
 	Method New()
+		If list = Null list = New TList
+		list.addfirst Self
 	EndMethod
 	
 	Method destroy()
+		If list = Null Return
+		list.remove Self
 	EndMethod	
 	
 	Function updateall( xoffset:Float, yoffset:Float )
@@ -60,8 +74,8 @@ Type tentity
 				If pv_falling
 					If pv_yac >= 10 
 						yac = -0.5
-						For Local p:Int = 0 To 9
-							tdust.Create( (x+p)+3, y, Rnd(-3.0,3.0)+(xac*-1), Rnd(-4.0, -8.0 ) )
+						For Local p:Int = 3 To width-6 Step 2
+							tdust.Create( (x+p), y, Rnd(-2.0,3.0)+(xac*-1), Rnd(-4.0, -8.0 ) )
 						Next
 						xac = 0
 					EndIf
@@ -69,12 +83,20 @@ Type tentity
 				EndIf
 			EndIf	
 		EndIf
+		
+		entitybelow()
 
 		x:+xac
 		xac:*0.9
 		If Abs(xac) < 0.25 xac = 0
 		
-		If xac<>0 facing = Sgn(xac)	
+		If xac<>0 
+			facing = Sgn(xac)	
+			moving = True
+			If holding holding.x = x
+		Else
+			moving = False
+		EndIf
 		
 		allow_left	= check_left()
 		allow_right	= check_right()			
@@ -225,64 +247,27 @@ Type tentity
 		
 	EndMethod
 	
+	Method entitybelow:Int( reset:Int=True )
+	
+		If Not falling Return
+		
+		For Local e:tentity = EachIn list
+		
+			If e <> Self
+				If RectsOverlap( x, y-height, width, height, e.x, e.y-e.height, e.width, e.height ) And pvy <= (e.y-e.height)
+					falling = False
+					y = e.y-e.height
+					yac = 0
+					'e.holding = Self
+				Else
+					'e.holding = Null
+				EndIf
+			EndIf
+		
+		Next
+		
+	EndMethod
+	
 	Method draw( xoffset:Float, yoffset:Float ) Abstract
 
-EndType
-
-Type tplayer Extends tentity
-
-	Field gun:Int
-	Field rot:Float
-
-	Method New()
-		If list = Null list = New TList
-		list.addlast Self
-	EndMethod
-	
-	Method destroy()
-	EndMethod
-	
-	Function Create:tplayer( x:Float, y:Float, width:Int, height:Int, parent:tmap )
-		If parent = Null Return
-		Local p:tplayer = New tplayer
-			p.x			= x
-			p.y			= y
-			p.width		= width
-			p.height	= height
-			p.parent	= parent
-		Return p
-	EndFunction
-	
-	Method update()
-		Super.update()
-	EndMethod
-	
-	Method draw( xoffset:Float, yoffset:Float )
-		
-		Local xx:Float = x - xoffset
-		Local yy:Float = y - yoffset
-
-		If RectsOverlap( xx, yy-height, width, height, 0, 0, GraphicsWidth(), GraphicsHeight() )
-			
-			SetColor(255,255,255)
-			SetAlpha(1.0)
-			SetBlend(ALPHABLEND)
-			SetScale( 2, 2 )
-			
-			If facing = -1
-				DrawImage( img_player, xx, yy, 2 )
-				DrawImage( img_gun, xx+11, yy-11, 9 )
-			Else
-				DrawImage( img_player, xx, yy, 1 )
-				DrawImage( img_gun, xx+21, yy-11, 1 )
-			EndIf
-			
-			SetScale( 1, 1 )
-			
-			Return True
-			
-		EndIf
-		
-	EndMethod
-	
 EndType

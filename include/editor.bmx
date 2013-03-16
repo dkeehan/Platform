@@ -5,10 +5,10 @@ Function editor()
 	Local grid:tgrid = tgrid.Create( 64, GRID_DOUBLEDASH )
 	SetGridColor( grid, 0, 0, 0, 0.5 )
 	
-	Local coords:tfloatcontrol = tfloatcontrol.Create()
-	SetControlBounds( coords, 0, 6400-GraphicsWidth(), 0, 6400-(GraphicsHeight()-64) )
-	
 	Local map:tmap = tmap.Create()
+	
+	Local coords:tfloatcontrol = tfloatcontrol.Create()
+	SetControlBounds( coords, 0, (map.width*64)-GraphicsWidth(), 0, (map.height*64)-GraphicsHeight() )	
 	
 	Local displaygrid:Int = True
 	
@@ -20,8 +20,12 @@ Function editor()
 	
 	Local mapx:Float, mapy:Float
 	
-	Local player1:tplayer = tplayer.Create( 140, 128, 32, 32, map )		
-		
+	Local player1:tplayer = tplayer.Create( 140, 128, 32, 32, map )	
+	
+	tcrate.Create( 210, 0, map )	
+	tcrate.Create( 410, 0, map )
+	tcrate.Create( 640, 0, map )
+			
 	Repeat
 	
 		If KeyDown( KEY_Z )
@@ -62,7 +66,7 @@ Function editor()
 		If KeyHit(KEY_O)
 			map.open()
 		EndIf
-		
+				
 		UpdateControl(coords)
 		
 		SetGridCoords( grid, GetControlX(coords), GetControlY(coords) )
@@ -84,6 +88,10 @@ Function editor()
 			map.set( layer, mx, my, paper )
 		EndIf
 
+		If KeyHit(KEY_C)
+			tcrate.Create( MouseX()+mapx, MouseY()+mapy, map )
+		EndIf
+
 		SetClsColor( 1, 150, 255 )
 		
 		Cls
@@ -101,7 +109,7 @@ Function editor()
 			
 			DrawImageRect( img_back, 0, 0, gfxw, gfxh )
 			
-			SetColor( 32, 32, 32 )
+			SetColor( 64, 64, 64 )
 			SetAlpha( 0.95 )
 			DrawImageRect( img_vignette1, 0, 0, gfxw, gfxh )
 

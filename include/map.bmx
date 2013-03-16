@@ -10,8 +10,8 @@ Type tmap
 
 	Method New()
 		layers	= 3
-		width	= 100
-		height	= 100
+		width	= 50
+		height	= 50
 	EndMethod
 	
 	Method destroy()
@@ -26,7 +26,7 @@ Type tmap
 	EndFunction
 
 	Method save( filename:String="temp.dat" )
-	
+
 		If filename
 			
 			If ReadDir( "data" )
@@ -34,6 +34,7 @@ Type tmap
 				CreateDir( "data" )
 			EndIf
 
+			DebugLog( "OPEN STREAM...")
 			Local stream:TStream = WriteFile( "data/"+filename )
 			
 			If stream
@@ -53,6 +54,12 @@ Type tmap
 				Next
 				
 				CloseStream( stream )
+				
+				DebugLog( "STREAM COMPLETE")
+				
+			Else
+			
+				DebugLog( "STREAM FAILED")
 
 			EndIf
 			
@@ -64,7 +71,9 @@ Type tmap
 	
 		If filename = "" Return
 		
+		DebugLog( "OPEN STREAM" )
 		Local stream:TStream = ReadFile( "data/"+filename )
+		
 		Local tile:Int
 		
 		If stream
@@ -72,6 +81,9 @@ Type tmap
 			layers	= ReadInt( stream )
 			width 	= ReadInt( stream )
 			height 	= ReadInt( stream )
+			
+			DebugLog( "Width: "+width )
+			DebugLog( "Height: "+height )
 			
 			For Local dl:Int = 0 To layers-1
 				For Local dy:Int = 0 To height-1
@@ -85,6 +97,12 @@ Type tmap
 			Next
 		
 			CloseStream( stream )
+			
+			DebugLog( "STREAM COMPLETE" )
+			
+		Else
+		
+			DebugLog( "STREAM FAILED" ) 
 
 		EndIf
 	
@@ -164,18 +182,11 @@ Type tmap
 								SetBlend(ALPHABLEND)
 
 								DrawImage( img_tiles, bx-xoffset, by-yoffset, block )
-								
-								If tiledata[block] = 0
-									SetColor( 0, 0, 0 )
-									SetAlpha( 0.75 )
-									SetScale( 1, 1 )
-									DrawImage( img_noise, bx-xoffset, by-yoffset, (((dy+l) Mod(8))*8)+((dx+l) Mod(8)) )		
-								EndIf
 							
 							Case 1
 							
 								SetColor( 245, 245, 255 )			
-								SetAlpha( 1.0 )
+								SetAlpha( 0.5 )
 								SetScale( 2, 2 )
 								SetBlend(LIGHTBLEND)
 								DrawImage( img_bloom, bx-xoffset, by-yoffset, block )

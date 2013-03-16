@@ -12,6 +12,9 @@ Global img_noise:TImage
 Global img_player:TImage
 Global img_gun:TImage
 
+Global spr_objects1:TImage
+Global spr_objects2:TImage
+
 Global img_status:TImage
 Global img_outline:TImage
 
@@ -28,6 +31,12 @@ Function init_media()
 		
 	img_player = LoadAnimImage( "media/image/player.png", 16, 16, 0, 64, MASKEDIMAGE  )
 	SetImageHandle( img_player, 0, 15 )
+	
+	spr_objects1	= LoadAnimImage( "media/image/objects1.png", 16, 16, 0, 64, MASKEDIMAGE )
+	SetImageHandle( spr_objects1, 0, 15 )
+	
+	spr_objects2	= LoadAnimImage( "media/image/objects2.png", 32, 32, 0, 64, MASKEDIMAGE )
+	SetImageHandle( spr_objects2, 0, 15 )	
 	
 	img_gun = LoadAnimImage( "media/image/guns.png", 32, 32, 0, 16, MASKEDIMAGE )
 	MidHandleImage( img_gun )	

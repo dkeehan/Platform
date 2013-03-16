@@ -1,10 +1,14 @@
 Controls:
 
-DUDE!
+DUDE
+
 Z - Left
 X - Right
 J - Jump
 
+
 Editor
+
 G - Grid on/off
 , - Grab Tile
+C - Add Crate
