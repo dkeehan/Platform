@@ -42,4 +42,7 @@ Type tcrate Extends tentity
 		
 	EndMethod
 
+	Method collision( entity:tentity, flags:Int )
+	EndMethod
+
 EndType

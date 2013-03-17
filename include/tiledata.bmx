@@ -12,5 +12,6 @@ Function init_tiledata()
 		tiledata[t] = 1
 	Next
 	tiledata[34] = 1
-	tiledata[35] = 1			
+	tiledata[35] = 1
+	tiledata[36] = 1			
 EndFunction

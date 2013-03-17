@@ -5,6 +5,7 @@ Type tplayer Extends tentity
 	
 	Method New()
 		id = "player"
+		pushable = false
 	EndMethod
 	
 	Function Create:tplayer( x:Float, y:Float, width:Int, height:Int, parent:tmap )
@@ -49,5 +50,8 @@ Type tplayer Extends tentity
 		EndIf
 		
 	EndMethod
+	
+	Method collision( entity:tentity, flags:Int )
+	EndMethod	
 	
 EndType

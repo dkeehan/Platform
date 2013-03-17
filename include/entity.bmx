@@ -2,6 +2,15 @@ Include "entity/player.bmx"
 Include "entity/crate.bmx"
 Include "entity/metal crate.bmx"
 
+Const COLLIDE_ABOVE		= 1
+Const COLLIDE_BELOW		= 2
+Const COLLIDE_LEFT		= 3
+Const COLLIDE_RIGHT		= 4
+
+Const ENTITY_GRAVITY	= 1
+Const ENTITY_STANDABLE	= 2
+Const ENTITY_PUSHABLE	= 4
+
 Type tentity
 
 	Global list:TList
@@ -14,6 +23,8 @@ Type tentity
 	Field pvx:Int, pvy:Int
 	
 	Field xac:Float, yac:Float
+	
+	Field flags:Int
 	
 	Field facing:Int
 	Field jumping:Int
@@ -268,6 +279,7 @@ Type tentity
 							x = e.x-width
 							If xac>0 xac = 0
 						EndIf
+						collision( e, COLLIDE_LEFT )
 					Else
 						If e.allow_left						
 							e.x = x-e.width
@@ -277,6 +289,7 @@ Type tentity
 							x = e.x+e.width
 							If xac<0 xac = 0
 						EndIf
+						collision( e, COLLIDE_RIGHT )
 					EndIf
 				Else
 				EndIf
@@ -296,7 +309,9 @@ Type tentity
 				If RectsOverlap( x, y-(height), width-1, height, e.x, e.y-(e.height), e.width-1, e.height ) And pvy <= (e.y-e.height)
 					falling = False
 					y = e.y-e.height
+					If yac >= 11 PlaySound( sfx_land )
 					If yac>0 yac = 0
+					collision( e, COLLIDE_ABOVE )
 				Else
 				EndIf
 			EndIf
@@ -316,6 +331,7 @@ Type tentity
 					jumping = False
 					y = e.y+height
 					If yac<0 yac = 0
+					collision( e, COLLIDE_BELOW )
 				Else
 				EndIf
 			EndIf
@@ -325,5 +341,7 @@ Type tentity
 	EndMethod
 	
 	Method draw( xoffset:Float, yoffset:Float ) Abstract
+	
+	Method collision( entity:tentity, flags:Int ) Abstract
 
 EndType

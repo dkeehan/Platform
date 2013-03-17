@@ -41,5 +41,8 @@ Type tmetalcrate Extends tentity
 		EndIf
 		
 	EndMethod
+	
+	Method collision( entity:tentity, flags:Int )
+	EndMethod
 
 EndType

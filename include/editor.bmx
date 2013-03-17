@@ -3,7 +3,7 @@ Function editor()
 	Local done:Int = False
 	
 	Local grid:tgrid = tgrid.Create( 64, GRID_DOUBLEDASH )
-	SetGridColor( grid, 0, 0, 0, 0.5 )
+	SetGridColor( grid, 0, 0, 0, 0.75 )
 	
 	Local map:tmap = tmap.Create()
 	
@@ -25,6 +25,8 @@ Function editor()
 	tcrate.Create( 210, 0, map )	
 	tmetalcrate.Create( 410, 0, map )
 	tcrate.Create( 640, 0, map )
+	
+	If mus_default PlaySound( mus_default )
 			
 	Repeat
 	
@@ -114,7 +116,7 @@ Function editor()
 			SetAlpha( 1.0 )
 			
 			DrawImageRect( img_back, 0, 0, gfxw, gfxh )
-			
+						
 			SetColor( 64, 64, 64 )
 			SetAlpha( 0.95 )
 			DrawImageRect( img_vignette1, 0, 0, gfxw, gfxh )

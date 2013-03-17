@@ -7,8 +7,6 @@ Global img_gradient1:TImage
 Global img_vignette1:TImage
 Global img_vignette2:TImage
 
-Global img_noise:TImage
-
 Global img_player:TImage
 Global img_gun:TImage
 
@@ -16,12 +14,15 @@ Global spr_objects1:TImage
 Global spr_objects2:TImage
 
 Global img_status:TImage
-Global img_outline:TImage
+
+Global img_clouds:TImage
 
 Global part_dust:TImage
 
 Global sfx_jump:TSound
 Global sfx_land:TSound
+
+Global mus_default:TSound
 
 Function init_media()
 
@@ -41,6 +42,8 @@ Function init_media()
 	spr_objects2	= LoadAnimImage( "media/image/objects2.png", 32, 32, 0, 64, MASKEDIMAGE )
 	SetImageHandle( spr_objects2, 0, 31 )	
 	
+	img_clouds		= LoadAnimImage( "media/image/clouds.png", 128, 64, 0, 2, MASKEDIMAGE )
+	
 	img_gun = LoadAnimImage( "media/image/guns.png", 32, 32, 0, 16, MASKEDIMAGE )
 	MidHandleImage( img_gun )	
 	
@@ -48,19 +51,16 @@ Function init_media()
 	img_vignette2 = LoadImage( "media/image/vignette2.png", FILTEREDIMAGE|MIPMAPPEDIMAGE )
 	
 	img_gradient1 = LoadImage( "media/image/gradient1.png", FILTEREDIMAGE|MIPMAPPEDIMAGE )
-	
-	img_noise = LoadAnimImage( "media/image/noise.png", 64, 64, 0, 64, FILTEREDIMAGE|MIPMAPPEDIMAGE )
-	
+
 	img_status	= LoadImage( "media/image/status.png", 0 )
-	
-	img_outline	= LoadImage( "media/image/outline.png", MASKEDIMAGE )
-	SetImageHandle( img_outline, 1, 1 )
 	
 	part_dust	= LoadImage( "media/image/particles/dust.png", MASKEDIMAGE )
 	MidHandleImage( part_dust )
 	
 	sfx_jump	= LoadSound( "media/sfx/jump.wav" )
 	sfx_land	= LoadSound( "media/sfx/land.wav" )	
+	
+	'mus_default	= LoadSound( "media/music/broken_hand.ogg", true )
 
 EndFunction
 

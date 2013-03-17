@@ -1,14 +1,14 @@
 Controls:
 
-DUDE
+PLAYER:
 
-Z - Left
-X - Right
-J - Jump
+Z - Left.
+X - Right.
+J - Jump.
 
+Editor:
 
-Editor
-
-G - Grid on/off
-, - Grab Tile
-C - Add Crate
+G - Grid on/off.
+, - Grab Tile.
+C - Add Crate.
+M - Add Metal Crate.
