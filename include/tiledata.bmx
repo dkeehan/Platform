@@ -10,5 +10,7 @@ Function init_tiledata()
 	tiledata[10] = 1
 	For Local t:Int = 14 To 27			
 		tiledata[t] = 1
-	Next			
+	Next
+	tiledata[34] = 1
+	tiledata[35] = 1			
 EndFunction

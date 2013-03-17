@@ -23,7 +23,7 @@ Function editor()
 	Local player1:tplayer = tplayer.Create( 140, 128, 32, 32, map )	
 	
 	tcrate.Create( 210, 0, map )	
-	tcrate.Create( 410, 0, map )
+	tmetalcrate.Create( 410, 0, map )
 	tcrate.Create( 640, 0, map )
 			
 	Repeat
@@ -39,7 +39,8 @@ Function editor()
 		If KeyHit(KEY_J)
 			If Not ( player1.falling Or player1.jumping )
 				player1.jumping = True
-				player1.yac = -16.0			
+				player1.yac = -16.0	
+				PlaySound( sfx_jump )		
 			EndIf
 		EndIf
 	
@@ -91,6 +92,11 @@ Function editor()
 		If KeyHit(KEY_C)
 			tcrate.Create( MouseX()+mapx, MouseY()+mapy, map )
 		EndIf
+
+		If KeyHit(KEY_M)
+			tmetalcrate.Create( MouseX()+mapx, MouseY()+mapy, map )
+		EndIf
+		
 
 		SetClsColor( 1, 150, 255 )
 		

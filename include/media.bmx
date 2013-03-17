@@ -20,6 +20,9 @@ Global img_outline:TImage
 
 Global part_dust:TImage
 
+Global sfx_jump:TSound
+Global sfx_land:TSound
+
 Function init_media()
 
 	SetMaskColor( 255,0,255 )
@@ -36,7 +39,7 @@ Function init_media()
 	SetImageHandle( spr_objects1, 0, 15 )
 	
 	spr_objects2	= LoadAnimImage( "media/image/objects2.png", 32, 32, 0, 64, MASKEDIMAGE )
-	SetImageHandle( spr_objects2, 0, 15 )	
+	SetImageHandle( spr_objects2, 0, 31 )	
 	
 	img_gun = LoadAnimImage( "media/image/guns.png", 32, 32, 0, 16, MASKEDIMAGE )
 	MidHandleImage( img_gun )	
@@ -55,6 +58,9 @@ Function init_media()
 	
 	part_dust	= LoadImage( "media/image/particles/dust.png", MASKEDIMAGE )
 	MidHandleImage( part_dust )
+	
+	sfx_jump	= LoadSound( "media/sfx/jump.wav" )
+	sfx_land	= LoadSound( "media/sfx/land.wav" )	
 
 EndFunction
 

@@ -1,5 +1,6 @@
 Include "entity/player.bmx"
 Include "entity/crate.bmx"
+Include "entity/metal crate.bmx"
 
 Type tentity
 
@@ -20,6 +21,7 @@ Type tentity
 	Field moving:Int
 	
 	Field holding:tentity
+	Field pushing:tentity
 	
 	Field allow_left:Int
 	Field allow_right:Int
@@ -76,6 +78,7 @@ Type tentity
 						yac = -0.5
 						For Local p:Int = 3 To width-6 Step 2
 							tdust.Create( (x+p), y, Rnd(-2.0,3.0)+(xac*-1), Rnd(-4.0, -8.0 ) )
+							PlaySound( sfx_land )
 						Next
 						xac = 0
 					EndIf
@@ -85,6 +88,7 @@ Type tentity
 		EndIf
 		
 		entitybelow()
+		entityabove()
 
 		x:+xac
 		xac:*0.9
@@ -99,7 +103,9 @@ Type tentity
 		EndIf
 		
 		allow_left	= check_left()
-		allow_right	= check_right()			
+		allow_right	= check_right()
+		
+		entitypush()	
 
 	EndMethod
 	
@@ -115,7 +121,7 @@ Type tentity
 		yy1 = y-(height-1)
 		
 		mx1 = xx1/64 
-		my1 = (yy1/64)
+		my1 = yy1/64
 		
 		yy2 = y
 
@@ -126,8 +132,8 @@ Type tentity
 			bl2 = tiledata[parent.get( l, mx1, my2 )]
 			If bl1 <> 1 Or bl2 <> 1	
 				If reset
-					xac = 0
-					x = (((xx1/64)+1)*64)+1
+					If xac<0 xac = 0
+					x = (((xx1/64)+1)*64)
 				EndIf
 				Return False
 			EndIf	
@@ -149,20 +155,18 @@ Type tentity
 		yy1 = y-(height-1)
 		
 		mx1 = xx1/64 
-		my1 = (yy1/64)
+		my1 = yy1/64
 		
-		xx2 = xx1
 		yy2 = y
-		
-		mx2 = mx1
+
 		my2 = (yy2/64)
 
 		For Local l:Int = 0 To 2	
 			bl1 = tiledata[parent.get( l, mx1, my1 )]
-			bl2 = tiledata[parent.get( l, mx2, my2 )]
+			bl2 = tiledata[parent.get( l, mx1, my2 )]
 			If bl1 <> 1 Or bl2 <> 1
 				If reset
-					xac = 0
+					If xac>0 xac = 0
 					x = (((x/64)+1)*64)-width
 				EndIf
 				Return False
@@ -198,7 +202,7 @@ Type tentity
 			bl2 = tiledata[parent.get( l, mx2, my2 )]
 			If bl1 <> 1 Or bl2 <> 1
 				If reset
-					yac = 0
+					If yac<0 yac = 0
 					y = (Int(y/64)*64)+height
 				EndIf
 				Return False
@@ -236,7 +240,7 @@ Type tentity
 			bl2 = tiledata[parent.get( l, mx2, my1 )]
 			If bl1 <> 1 Or bl2 <> 1	
 				If reset
-					yac = 0
+					If yac>0 yac = 0
 					y = (Int((y+1)/64)*64)-1
 				EndIf
 				Return False
@@ -247,24 +251,76 @@ Type tentity
 		
 	EndMethod
 	
-	Method entitybelow:Int( reset:Int=True )
+	Method entitypush:Int( reset:Int=True )
 	
-		If Not falling Return
-		
+		If Not list Return
+	
 		For Local e:tentity = EachIn list
 		
-			If e <> Self
-				If RectsOverlap( x, y-height, width, height, e.x, e.y-e.height, e.width, e.height ) And pvy <= (e.y-e.height)
-					falling = False
-					y = e.y-e.height
-					yac = 0
-					'e.holding = Self
+			If e <> Self And e.pushable
+				If RectsOverlap( x, y-(height-1), width, height-1, e.x, e.y-(e.height-1), e.width, e.height-1 ) And pvy > e.y-height
+					If pvx < e.x
+						If e.allow_right
+							e.x = x+width
+							e.xac = xac
+						Else
+							allow_right = False
+							x = e.x-width
+							If xac>0 xac = 0
+						EndIf
+					Else
+						If e.allow_left						
+							e.x = x-e.width
+							e.xac = xac
+						Else
+							allow_left = False
+							x = e.x+e.width
+							If xac<0 xac = 0
+						EndIf
+					EndIf
 				Else
-					'e.holding = Null
 				EndIf
 			EndIf
 		
 		Next
+			
+	EndMethod
+	
+	Method entitybelow:Int( reset:Int=True )
+	
+		If Not (falling Or list ) Return
+		
+		For Local e:tentity = EachIn list
+		
+			If e <> Self
+				If RectsOverlap( x, y-(height), width-1, height, e.x, e.y-(e.height), e.width-1, e.height ) And pvy <= (e.y-e.height)
+					falling = False
+					y = e.y-e.height
+					If yac>0 yac = 0
+				Else
+				EndIf
+			EndIf
+		
+		Next
+		
+	EndMethod
+	
+	Method entityabove:Int( reset:Int=True )
+		
+		If Not (jumping Or list ) Return
+		
+		For Local e:tentity = EachIn list
+		
+			If e <> Self And e.pushable
+				If RectsOverlap( x, y-(height), width-1, height, e.x, e.y-(e.height), e.width-1, e.height ) And pvy > (e.y+height)
+					jumping = False
+					y = e.y+height
+					If yac<0 yac = 0
+				Else
+				EndIf
+			EndIf
+		
+		Next		
 		
 	EndMethod
 	
