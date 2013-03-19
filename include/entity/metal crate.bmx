@@ -2,7 +2,7 @@ Type tmetalcrate Extends tentity
 
 	Method New()
 		id = "metal_crate"
-		pushable = True
+		pushable = False
 	EndMethod
 
 	Function Create:tmetalcrate( x:Float, y:Float, parent:tmap )
@@ -25,7 +25,7 @@ Type tmetalcrate Extends tentity
 		Local xx:Float = x - xoffset
 		Local yy:Float = y - yoffset
 
-		If RectsOverlap( xx, yy-(height-1), width-1, height-1, 0, 0, GraphicsWidth(), GraphicsHeight() )
+		'If RectsOverlap( xx, yy-(height-1), width-1, height-1, 0, 0, GraphicsWidth(), GraphicsHeight() )
 			
 			SetColor( 255, 255, 255 )
 			SetAlpha( 1.0 )
@@ -38,7 +38,7 @@ Type tmetalcrate Extends tentity
 			
 			Return True
 			
-		EndIf
+		'EndIf
 		
 	EndMethod
 	

@@ -2,6 +2,9 @@ Include "entity/player.bmx"
 Include "entity/crate.bmx"
 Include "entity/metal crate.bmx"
 
+Include "entity/door.bmx"
+Include "entity/switch.bmx"
+
 Const COLLIDE_ABOVE		= 1
 Const COLLIDE_BELOW		= 2
 Const COLLIDE_LEFT		= 3
@@ -9,7 +12,8 @@ Const COLLIDE_RIGHT		= 4
 
 Const ENTITY_GRAVITY	= 1
 Const ENTITY_STANDABLE	= 2
-Const ENTITY_PUSHABLE	= 4
+Const ENTITY_MOVEABLE	= 4
+Const ENTITY_MAP		= 8
 
 Type tentity
 
@@ -25,6 +29,7 @@ Type tentity
 	Field xac:Float, yac:Float
 	
 	Field flags:Int
+	Field state:Int
 	
 	Field facing:Int
 	Field jumping:Int
@@ -40,10 +45,25 @@ Type tentity
 	Field pushable:Int = False
 	
 	Field parent:tmap
+	
+	Method removeflag( flag:Int )
+		If flags&flag
+			flags:-flag
+		Else
+		EndIf
+	EndMethod
+	
+	Method addflag( flag:Int )
+		If flags&flag
+		Else
+			flags:+flag
+		EndIf
+	EndMethod
 
 	Method New()
 		If list = Null list = New TList
 		list.addfirst Self
+		flags = ENTITY_GRAVITY|ENTITY_STANDABLE|ENTITY_MOVEABLE
 	EndMethod
 	
 	Method destroy()
@@ -55,9 +75,29 @@ Type tentity
 		If list = Null Return
 		For Local e:tentity = EachIn list
 			e.update()
-			e.draw( xoffset, yoffset )
+
+			If RectsOverlap( e.x-xoffset, (e.y-e.height)-yoffset, e.width, e.height, 0, 0, GraphicsWidth(), GraphicsHeight() )
+				e.draw( xoffset, yoffset )
+			EndIf
+			
 		Next
 	EndFunction
+	
+	Method getx:Int()
+		Return x
+	EndMethod
+	
+	Method gety:Int()
+		Return y
+	EndMethod
+	
+	Method getwidth:Int()
+		Return width
+	EndMethod
+	
+	Method getheight:Int()
+		Return height
+	EndMethod
 	
 	Method update()
 	
@@ -68,34 +108,42 @@ Type tentity
 		
 		Local pv_falling:Int = falling
 		Local pv_jumping:Int = jumping
+					
+		If flags & ENTITY_GRAVITY 
 			
-		y:+yac
-			
-		If jumping
-			yac:*0.90
-			If Abs(yac) < 0.25
-				yac = 0
-				jumping = False
+			y:+yac
+		
+			If jumping
+				If entityabove() jumping = False
 			EndIf
-			check_above()
-		Else
-			falling = check_below(True)
-			If falling
-				yac:+0.25
-				If Abs(yac) > 16.0 yac = 16.0*Sgn(yac)
-			Else
-				If pv_falling
-					If pv_yac >= 10 
-						yac = -0.5
-						For Local p:Int = 3 To width-6 Step 2
-							tdust.Create( (x+p), y, Rnd(-2.0,3.0)+(xac*-1), Rnd(-4.0, -8.0 ) )
-							PlaySound( sfx_land )
-						Next
-						xac = 0
-					EndIf
-					jumping = True
+				
+			If jumping
+				yac:*0.90
+				If Abs(yac) < 0.25
+					yac = 0
+					jumping = False
 				EndIf
-			EndIf	
+				check_above()
+			Else
+				falling = check_below(True)
+				If falling
+					yac:+0.25
+					If Abs(yac) > 16.0 yac = 16.0*Sgn(yac)
+				Else
+					If pv_falling
+						If pv_yac >= 10 
+							yac = -0.5
+							For Local p:Int = 3 To width-6 Step 2
+								tdust.Create( (x+p), y, Rnd(-2.0,3.0)+(xac*-1), Rnd(-4.0, -8.0 ) )
+								PlaySound( sfx_land )
+							Next
+							xac = 0
+						EndIf
+						jumping = True
+					EndIf
+				EndIf	
+			EndIf
+		
 		EndIf
 		
 		entitybelow()
@@ -116,7 +164,7 @@ Type tentity
 		allow_left	= check_left()
 		allow_right	= check_right()
 		
-		entitypush()	
+		entitypush()
 
 	EndMethod
 	
@@ -264,14 +312,19 @@ Type tentity
 	
 	Method entitypush:Int( reset:Int=True )
 	
+		Local ex:Int = getx()
+		Local ey:Int = gety()
+		Local ew:Int = getwidth()
+		Local eh:Int = getheight()
+	
 		If Not list Return
 	
 		For Local e:tentity = EachIn list
 		
-			If e <> Self And e.pushable
-				If RectsOverlap( x, y-(height-1), width, height-1, e.x, e.y-(e.height-1), e.width, e.height-1 ) And pvy > e.y-height
+			If e <> Self 'And e.pushable
+				If RectsOverlap( ex, ey-(eh-1), ew, eh-1, e.getx(), e.gety()-(e.getheight()-1), e.getwidth(), e.getheight()-1 ) And pvy > e.y-height
 					If pvx < e.x
-						If e.allow_right
+						If e.allow_right And e.pushable
 							e.x = x+width
 							e.xac = xac
 						Else
@@ -281,7 +334,7 @@ Type tentity
 						EndIf
 						collision( e, COLLIDE_LEFT )
 					Else
-						If e.allow_left						
+						If e.allow_left	And e.pushable					
 							e.x = x-e.width
 							e.xac = xac
 						Else
@@ -326,16 +379,20 @@ Type tentity
 		
 		For Local e:tentity = EachIn list
 		
-			If e <> Self And e.pushable
-				If RectsOverlap( x, y-(height), width-1, height, e.x, e.y-(e.height), e.width-1, e.height ) And pvy > (e.y+height)
-					jumping = False
-					y = e.y+height
-					If yac<0 yac = 0
+			If e <> Self 'And e.pushable
+				If RectsOverlap( x, y-(height-1), width-1, height-1, e.x, e.y-(e.height-1), e.width-1, e.height-1 ) And pvy > (e.y+height)
+					If jumping
+						jumping = False
+						If reset
+							y = e.y+height
+							If yac<0 yac = 0
+						EndIf
+					EndIf
 					collision( e, COLLIDE_BELOW )
+					Return True
 				Else
 				EndIf
-			EndIf
-		
+			EndIf	
 		Next		
 		
 	EndMethod

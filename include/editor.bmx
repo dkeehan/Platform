@@ -26,6 +26,15 @@ Function editor()
 	tmetalcrate.Create( 410, 0, map )
 	tcrate.Create( 640, 0, map )
 	
+	Local door1:tdoor = tdoor.Create( (6*64)+16, (9*64)-1, map )
+	Local door2:tdoor = tdoor.Create( (5*64)+16, (12*64)-1, map )
+	Local door3:tdoor = tdoor.Create( (10*64)+16, (14*64)-1, map )
+		
+	door1.open = 1
+	door1.state = 1
+	door3.open = 33
+	door2.open = 33
+	
 	If mus_default PlaySound( mus_default )
 			
 	Repeat
@@ -121,16 +130,17 @@ Function editor()
 			SetAlpha( 0.95 )
 			DrawImageRect( img_vignette1, 0, 0, gfxw, gfxh )
 
-			map.draw(Int(mapx), Int(mapy))
+			map.draw( mapx, mapy )
 			
 			tparticle.updateall( Int(mapx), Int(mapy) )			
-			tentity.updateall( Int(mapx), Int(mapy) )
+			tentity.updateall( mapx, mapy )
 
 			SetColor( 0, 0, 0 )
 			SetAlpha( 0.5 )
 			SetBlend( ALPHABLEND )
 		
 			DrawImageRect( img_vignette2, 0, 0, gfxw, gfxh )
+			DrawImageRect( img_gradient1, 0, gfxh-32, gfxw, 32 )
 			
 			SetColor( 255, 255, 255 )
 			SetAlpha( 0.75 )

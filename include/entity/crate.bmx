@@ -2,7 +2,7 @@ Type tcrate Extends tentity
 
 	Method New()
 		id = "crate"
-		pushable = False
+		pushable = True
 	EndMethod
 
 	Function Create:tcrate( x:Float, y:Float, parent:tmap )
@@ -25,7 +25,7 @@ Type tcrate Extends tentity
 		Local xx:Float = x - xoffset
 		Local yy:Float = y - yoffset
 
-		If RectsOverlap( xx, yy-height, width, height, 0, 0, GraphicsWidth(), GraphicsHeight() )
+		'If RectsOverlap( xx, yy-height, width, height, 0, 0, GraphicsWidth(), GraphicsHeight() )
 			
 			SetColor( 255, 255, 255 )
 			SetAlpha( 1.0 )
@@ -38,7 +38,7 @@ Type tcrate Extends tentity
 			
 			Return True
 			
-		EndIf
+		'EndIf
 		
 	EndMethod
 

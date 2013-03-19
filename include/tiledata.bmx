@@ -1,6 +1,7 @@
 Global tiledata:Int[256]
 
 Function init_tiledata()
+
 	tiledata[0] = 1
 	tiledata[3] = 1
 	tiledata[4] = 1	
@@ -13,5 +14,9 @@ Function init_tiledata()
 	Next
 	tiledata[34] = 1
 	tiledata[35] = 1
-	tiledata[36] = 1			
+	tiledata[36] = 1
+	tiledata[37] = 1
+	tiledata[38] = 1	
+	tiledata[39] = 1	
+						
 EndFunction

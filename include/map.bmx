@@ -161,8 +161,8 @@ Type tmap
 			
 				For mx = 0 To w+1
 				
-					bx = Int( mx*tilesize )
-					by = Int( my*tilesize )
+					bx = (mx*tilesize) - Int(xoffset)
+					by = (my*tilesize) - Int(yoffset)
 					
 					dx = mx+mapx
 					dy = my+mapy
@@ -181,7 +181,7 @@ Type tmap
 								SetScale( 2, 2 )
 								SetBlend(ALPHABLEND)
 
-								DrawImage( img_tiles, bx-xoffset, by-yoffset, block )
+								DrawImage( img_tiles, bx, by, block )
 							
 							Case 1
 							
@@ -189,7 +189,7 @@ Type tmap
 								SetAlpha( 0.5 )
 								SetScale( 2, 2 )
 								SetBlend(LIGHTBLEND)
-								DrawImage( img_bloom, bx-xoffset, by-yoffset, block )
+								DrawImage( img_bloom, bx, by, block )
 												
 							EndSelect
 										

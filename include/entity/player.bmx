@@ -5,7 +5,7 @@ Type tplayer Extends tentity
 	
 	Method New()
 		id = "player"
-		pushable = false
+		pushable = False
 	EndMethod
 	
 	Function Create:tplayer( x:Float, y:Float, width:Int, height:Int, parent:tmap )
@@ -28,26 +28,22 @@ Type tplayer Extends tentity
 		Local xx:Float = x - xoffset
 		Local yy:Float = y - yoffset
 
-		If RectsOverlap( xx, yy-height, width, height, 0, 0, GraphicsWidth(), GraphicsHeight() )
-			
-			SetColor( 255, 255, 255 )
-			SetAlpha( 1.0 )
-			SetBlend( ALPHABLEND )
-			SetScale( 2, 2 )
-			
-			If facing = -1
-				DrawImage( img_player, xx, yy, 2 )
-				DrawImage( img_gun, xx+11, yy-11, 9 )
-			Else
-				DrawImage( img_player, xx, yy, 1 )
-				DrawImage( img_gun, xx+21, yy-11, 1 )
-			EndIf
-			
-			SetScale( 1, 1 )
-			
-			Return True
-			
+		SetColor( 255, 255, 255 )
+		SetAlpha( 1.0 )
+		SetBlend( ALPHABLEND )
+		SetScale( 2, 2 )
+		
+		If facing = -1
+			DrawImage( img_player, xx, yy, 2 )
+			DrawImage( img_gun, xx+11, yy-11, 9 )
+		Else
+			DrawImage( img_player, xx, yy, 1 )
+			DrawImage( img_gun, xx+21, yy-11, 1 )
 		EndIf
+		
+		SetScale( 1, 1 )
+		
+		Return True
 		
 	EndMethod
 	
