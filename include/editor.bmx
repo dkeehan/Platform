@@ -29,11 +29,14 @@ Function editor()
 	Local door1:tdoor = tdoor.Create( (6*64)+16, (9*64)-1, map )
 	Local door2:tdoor = tdoor.Create( (5*64)+16, (12*64)-1, map )
 	Local door3:tdoor = tdoor.Create( (10*64)+16, (14*64)-1, map )
+	door3.state = 1
+	
+	Local switch1:tswitch = tswitch.Create( (2*64)+20, (8*64)-1, map )
+	Local switch2:tswitch = ttimerswitch.Create( (9*64)+20, (8*64)-1, map )
 		
-	door1.open = 1
-	door1.state = 1
-	door3.open = 33
-	door2.open = 33
+	switch1.addoperator( door1 )
+	switch1.addoperator( door3 )
+	switch2.addoperator( door2 )				
 	
 	If mus_default PlaySound( mus_default )
 			
@@ -78,6 +81,20 @@ Function editor()
 		If KeyHit(KEY_O)
 			map.open()
 		EndIf
+		
+		player1.speak = 0
+		
+		If KeyDown(KEY_SPACE)
+			player1.speak = 1
+		EndIf
+
+		If KeyDown(KEY_A)
+			player1.speak = 2
+		EndIf
+		
+		If KeyDown(KEY_M)
+			player1.speak = 4
+		EndIf		
 				
 		UpdateControl(coords)
 		
@@ -140,7 +157,6 @@ Function editor()
 			SetBlend( ALPHABLEND )
 		
 			DrawImageRect( img_vignette2, 0, 0, gfxw, gfxh )
-			DrawImageRect( img_gradient1, 0, gfxh-32, gfxw, 32 )
 			
 			SetColor( 255, 255, 255 )
 			SetAlpha( 0.75 )

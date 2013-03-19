@@ -1,6 +1,6 @@
 Type tdoor Extends tentity
 
-	Field open:Float = 32
+	Field open:Float
 
 	Method New()
 		flags = 0
@@ -31,12 +31,12 @@ Type tdoor Extends tentity
 		Super.update()
 		If state = 0
 			If open > 0 
-				open:*0.98
+				open:-0.25
 				If Abs(open) < 0 open = 0
 			EndIf
 		Else
 			If open < 60
-				open:/0.98
+				open:+0.25
 				If Abs(open) >=60 open = 60
 			EndIf
 		EndIf

@@ -332,7 +332,7 @@ Type tentity
 							x = e.x-width
 							If xac>0 xac = 0
 						EndIf
-						collision( e, COLLIDE_LEFT )
+						e.collision( Self, COLLIDE_RIGHT )
 					Else
 						If e.allow_left	And e.pushable					
 							e.x = x-e.width
@@ -342,7 +342,7 @@ Type tentity
 							x = e.x+e.width
 							If xac<0 xac = 0
 						EndIf
-						collision( e, COLLIDE_RIGHT )
+						e.collision( Self, COLLIDE_LEFT )
 					EndIf
 				Else
 				EndIf
@@ -356,15 +356,20 @@ Type tentity
 	
 		If Not (falling Or list ) Return
 		
+		Local ex:Int = getx()
+		Local ey:Int = gety()
+		Local ew:Int = getwidth()
+		Local eh:Int = getheight()
+		
 		For Local e:tentity = EachIn list
 		
 			If e <> Self
-				If RectsOverlap( x, y-(height), width-1, height, e.x, e.y-(e.height), e.width-1, e.height ) And pvy <= (e.y-e.height)
+				If RectsOverlap( ex, ey-(eh), ew-1, eh, e.getx(), e.gety()-(e.getheight()), e.getwidth()-1, e.getheight() ) And pvy <= (e.gety()-e.getheight())
 					falling = False
-					y = e.y-e.height
+					y = e.gety()-e.getheight()
 					If yac >= 11 PlaySound( sfx_land )
 					If yac>0 yac = 0
-					collision( e, COLLIDE_ABOVE )
+					e.collision( Self, COLLIDE_ABOVE )
 				Else
 				EndIf
 			EndIf
@@ -388,7 +393,7 @@ Type tentity
 							If yac<0 yac = 0
 						EndIf
 					EndIf
-					collision( e, COLLIDE_BELOW )
+					e.collision( Self, COLLIDE_BELOW )
 					Return True
 				Else
 				EndIf

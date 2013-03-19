@@ -18,10 +18,13 @@ Global spr_objects2:TImage
 Global img_status:TImage
 Global img_clouds:TImage
 
+Global img_timerswitch:TImage
+
 Global part_dust:TImage
 
 Global sfx_jump:TSound
 Global sfx_land:TSound
+Global sfx_blip:TSound
 
 Global mus_default:TSound
 
@@ -46,6 +49,8 @@ Function init_media()
 	spr_objects2	= LoadAnimImage( "media/image/objects2.png", 32, 32, 0, 64, MASKEDIMAGE )
 	SetImageHandle( spr_objects2, 0, 31 )	
 	
+	img_timerswitch = LoadAnimImage( "media/image/timer_switch.png", 16, 6, 0, 13, 0 )
+	
 	img_clouds		= LoadAnimImage( "media/image/clouds.png", 128, 64, 0, 2, MASKEDIMAGE )
 	
 	img_gun = LoadAnimImage( "media/image/guns.png", 32, 32, 0, 16, MASKEDIMAGE )
@@ -64,6 +69,7 @@ Function init_media()
 	
 	sfx_jump	= LoadSound( "media/sfx/jump.wav" )
 	sfx_land	= LoadSound( "media/sfx/land.wav" )	
+	sfx_blip	= LoadSound( "media/sfx/blip.wav" )
 	
 	'mus_default	= LoadSound( "media/music/broken_hand.ogg", true )
 

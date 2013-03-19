@@ -2,6 +2,7 @@ Type tplayer Extends tentity
 
 	Field gun:Int
 	Field rot:Float
+	Field speak:Int = 0
 	
 	Method New()
 		id = "player"
@@ -25,8 +26,8 @@ Type tplayer Extends tentity
 	
 	Method draw( xoffset:Float, yoffset:Float )
 		
-		Local xx:Float = x - xoffset
-		Local yy:Float = y - yoffset
+		Local xx:Float = x - Int(xoffset)
+		Local yy:Float = y - Int(yoffset)
 
 		SetColor( 255, 255, 255 )
 		SetAlpha( 1.0 )
@@ -39,6 +40,10 @@ Type tplayer Extends tentity
 		Else
 			DrawImage( img_player, xx, yy, 1 )
 			DrawImage( img_gun, xx+21, yy-11, 1 )
+		EndIf
+		
+		If speak > 0
+			DrawImage( img_bubble, xx+width, yy-(height), speak )
 		EndIf
 		
 		SetScale( 1, 1 )
