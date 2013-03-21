@@ -3,6 +3,7 @@ Type tswitch Extends tentity
 	Field operate:TList
 
 	Method New()
+		id = "switch"
 	EndMethod
 	
 	Method destroy()
@@ -114,7 +115,7 @@ Type ttimerswitch Extends tswitch
 		
 		SetScale( 2, 2 )
 
-		DrawImage( spr_objects1, xx, yy, 3+state )
+		DrawImage( spr_objects1, xx, yy-1, 3+state )
 		
 		If state = 1
 			frame = 13-( timer/10 )

@@ -25,21 +25,17 @@ Type tcrate Extends tentity
 		Local xx:Float = x - xoffset
 		Local yy:Float = y - yoffset
 
-		'If RectsOverlap( xx, yy-height, width, height, 0, 0, GraphicsWidth(), GraphicsHeight() )
-			
-			SetColor( 255, 255, 255 )
-			SetAlpha( 1.0 )
-			SetBlend( ALPHABLEND )
-			SetScale( 2, 2 )
+		SetColor( 255, 255, 255 )
+		SetAlpha( 1.0 )
+		SetBlend( ALPHABLEND )
+		SetScale( 2, 2 )
 
-			DrawImage( spr_objects1, xx, yy, 1 )
+		DrawImage( spr_objects1, xx, yy-1, 1 )
 
-			SetScale( 1, 1 )
-			
-			Return True
-			
-		'EndIf
+		SetScale( 1, 1 )
 		
+		Return True
+
 	EndMethod
 
 	Method collision( entity:tentity, flags:Int )

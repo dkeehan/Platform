@@ -1,8 +1,13 @@
+Const PART_GRAVITY	= 1
+Const PART_FADE		= 2
+
 Type tparticle
 
 	Global list:TList
 	
-	Field x:Int, y:Int
+	Field flags:Int
+	
+	Field x:Float, y:Float
 	Field xac:Float, yac:Float
 	Field angle:Float
 	
@@ -13,6 +18,11 @@ Type tparticle
 	Field scale:Float
 	
 	Field map:tmap
+	
+	Field life_time:Float
+	Field life_decay:Float
+	
+	Field fade_rate:Float	= 0.95
 	
 	Method New()
 		If list = Null list = New TList
@@ -32,6 +42,20 @@ Type tparticle
 		list = Null
 	EndFunction
 	
+	Method addflag( flag:Int )
+		If flags & flag
+			Return
+		Else
+			flags:+flag
+		EndIf
+	EndMethod
+	
+	Method removeflag( flag:Int )
+		If flags & flag
+			flags:-flag
+		EndIf
+	EndMethod
+	
 	Function updateall( xoffset:Float, yoffset:Float )
 		If list = Null Return
 		For Local p:tparticle = EachIn list
@@ -40,18 +64,33 @@ Type tparticle
 		Next
 	EndFunction
 	
-	Method update() Abstract
+	Method update()
+	
+		If flags & PART_GRAVITY
+			yac:+0.45
+			If Abs(yac) > 8 yac = 8*Sgn(yac)			
+		EndIf
+		
+		If flags & PART_FADE
+			alpha:*fade_rate
+			If alpha < 0.01 aplha = 0
+		EndIf
+	
+	EndMethod
+	
 	Method draw( xoffset:Float, yoffset:Float ) Abstract
 	
 EndType
 
 Type tdust Extends tparticle
 
-	Function Create:tdust( x:Int, y:Int, xac:Float, yac:Float )
+	Function Create:tdust( x:Int, y:Int, xac:Float, yac:Float, flags:Int=PART_GRAVITY|PART_FADE )
 	
 		Local c:Int = Rnd( 0, 64 )
  
 		Local d:tdust = New tdust
+		
+			d.flags	= flags
 		
 			d.x		= x
 			d.y		= y
@@ -73,18 +112,17 @@ Type tdust Extends tparticle
 
 	Method update()
 	
+		Super.update()
+		
+		If alpha = 0 destroy()
+	
 		xac:*0.95
 		If Abs(xac) < 0.1 xac = 0
 		x:+xac
 		
 		angle:+(xac*10)
 		
-		yac:+0.45
-		If Abs(yac) > 8 yac = 8*Sgn(yac)
-		y:+yac
-		
-		alpha:*0.95
-		If alpha < 0.1 destroy()
+		y:+yac	
 		
 	EndMethod
 	

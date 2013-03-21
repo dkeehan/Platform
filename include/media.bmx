@@ -71,7 +71,7 @@ Function init_media()
 	sfx_land	= LoadSound( "media/sfx/land.wav" )	
 	sfx_blip	= LoadSound( "media/sfx/blip.wav" )
 	
-	'mus_default	= LoadSound( "media/music/broken_hand.ogg", true )
+	'mus_default	= LoadSound( "media/music/galway.ogg", True )
 
 EndFunction
 

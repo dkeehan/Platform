@@ -23,7 +23,7 @@ Function editor()
 	Local player1:tplayer = tplayer.Create( 140, 128, 32, 32, map )	
 	
 	tcrate.Create( 210, 0, map )	
-	tmetalcrate.Create( 410, 0, map )
+	tmagnet.Create( (8*64)+16, (16*64)-1, map )
 	tcrate.Create( 640, 0, map )
 	
 	Local door1:tdoor = tdoor.Create( (6*64)+16, (9*64)-1, map )
@@ -33,13 +33,18 @@ Function editor()
 	
 	Local switch1:tswitch = tswitch.Create( (2*64)+20, (8*64)-1, map )
 	Local switch2:tswitch = ttimerswitch.Create( (9*64)+20, (8*64)-1, map )
+	Local switch3:tswitch = ttimerswitch.Create( (9*64)+20, (11*64)-1, map )	
 		
 	switch1.addoperator( door1 )
 	switch1.addoperator( door3 )
-	switch2.addoperator( door2 )				
+	switch2.addoperator( door2 )
+	switch3.addoperator( door3 )				
 	
-	If mus_default PlaySound( mus_default )
-			
+	Local mus_channel:TChannel = AllocChannel()
+	SetChannelVolume( mus_channel, 0.5 )
+	
+	If mus_default PlaySound( mus_default,mus_channel )
+
 	Repeat
 	
 		If KeyDown( KEY_Z )
@@ -50,13 +55,7 @@ Function editor()
 			If player1.allow_right player1.xac:+0.5		
 		EndIf
 		
-		If KeyHit(KEY_J)
-			If Not ( player1.falling Or player1.jumping )
-				player1.jumping = True
-				player1.yac = -16.0	
-				PlaySound( sfx_jump )		
-			EndIf
-		EndIf
+		If KeyHit(KEY_J) player1.jump( -16 )
 	
 		If KeyDown(KEY_ESCAPE) Or AppTerminate() done = True
 		
@@ -92,7 +91,7 @@ Function editor()
 			player1.speak = 2
 		EndIf
 		
-		If KeyDown(KEY_M)
+		If KeyDown(KEY_K)
 			player1.speak = 4
 		EndIf		
 				
@@ -122,7 +121,7 @@ Function editor()
 		EndIf
 
 		If KeyHit(KEY_M)
-			tmetalcrate.Create( MouseX()+mapx, MouseY()+mapy, map )
+			tmagnet.Create( MouseX()+mapx, MouseY()+mapy, map )
 		EndIf
 		
 
@@ -162,7 +161,7 @@ Function editor()
 			SetAlpha( 0.75 )
 			SetScale( 2, 2 )
 			
-			DrawImage( img_status, 16, gfxh-48 )			
+			DrawImage( img_status, 16, gfxh-48 )
 
 			SetScale( 1, 1 )
 

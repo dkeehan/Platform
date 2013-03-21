@@ -35,11 +35,11 @@ Type tplayer Extends tentity
 		SetScale( 2, 2 )
 		
 		If facing = -1
-			DrawImage( img_player, xx, yy, 2 )
-			DrawImage( img_gun, xx+11, yy-11, 9 )
+			DrawImage( img_player, xx, yy-1, 2 )
+			DrawImage( img_gun, xx+11, yy-12, 9 )
 		Else
-			DrawImage( img_player, xx, yy, 1 )
-			DrawImage( img_gun, xx+21, yy-11, 1 )
+			DrawImage( img_player, xx, yy-1, 1 )
+			DrawImage( img_gun, xx+21, yy-12, 1 )
 		EndIf
 		
 		If speak > 0

@@ -3,6 +3,7 @@ Type tdoor Extends tentity
 	Field open:Float
 
 	Method New()
+		id = "door"
 		flags = 0
 	EndMethod
 	
@@ -57,14 +58,14 @@ Type tdoor Extends tentity
 		SetScale( 2, 2 )
 		
 		SetViewport( xx, yy-(height-1), width, height+1 )
-		DrawImage( spr_objects2, xx, yy-open, 2 )
+		DrawImage( spr_objects2, xx, (yy-1)-open, 2 )
 		
 		SetScale( 1, 1 )
 		
 		SetColor( 0, 0, 0 )
 		SetAlpha( 0.75 )
 		
-		DrawImageRect( img_gradient2, xx, yy-(height-1), width, 4 )
+		DrawImageRect( img_gradient2, xx, (yy-1)-(height-1), width, 4 )
 		
 		SetViewport( vx, vy, vw, vh )
 	

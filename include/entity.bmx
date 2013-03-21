@@ -1,6 +1,7 @@
 Include "entity/player.bmx"
 Include "entity/crate.bmx"
 Include "entity/metal crate.bmx"
+Include "entity/magnet.bmx"
 
 Include "entity/door.bmx"
 Include "entity/switch.bmx"
@@ -21,10 +22,10 @@ Type tentity
 	
 	Field id:String
 
-	Field x:Int, y:Int
+	Field x:Float, y:Float
 	Field width:Int, height:Int
 		
-	Field pvx:Int, pvy:Int
+	Field pvx:Float, pvy:Float
 	
 	Field xac:Float, yac:Float
 	
@@ -77,7 +78,7 @@ Type tentity
 			e.update()
 
 			If RectsOverlap( e.x-xoffset, (e.y-e.height)-yoffset, e.width, e.height, 0, 0, GraphicsWidth(), GraphicsHeight() )
-				e.draw( xoffset, yoffset )
+				e.draw( Int(xoffset), Int(yoffset) )
 			EndIf
 			
 		Next
@@ -102,7 +103,7 @@ Type tentity
 	Method update()
 	
 		pvx = x
-		pvy = y	
+		pvy = y
 		
 		Local pv_yac:Float = yac
 		
@@ -118,7 +119,7 @@ Type tentity
 			EndIf
 				
 			If jumping
-				yac:*0.90
+				yac:*0.89
 				If Abs(yac) < 0.25
 					yac = 0
 					jumping = False
@@ -135,7 +136,7 @@ Type tentity
 							yac = -0.5
 							For Local p:Int = 3 To width-6 Step 2
 								tdust.Create( (x+p), y, Rnd(-2.0,3.0)+(xac*-1), Rnd(-4.0, -8.0 ) )
-								PlaySound( sfx_land )
+								'PlaySound( sfx_land )
 							Next
 							xac = 0
 						EndIf
@@ -149,9 +150,10 @@ Type tentity
 		entitybelow()
 		entityabove()
 
+		If Abs(xac) > 4.0 xac = 4*(Sgn(xac))
 		x:+xac
 		xac:*0.9
-		If Abs(xac) < 0.25 xac = 0
+		If Abs(xac) < 0.1 xac = 0
 		
 		If xac<>0 
 			facing = Sgn(xac)	
@@ -176,13 +178,13 @@ Type tentity
 		Local xx2:Int, yy2:Int, mx2:Int, my2:Int	
 		Local bl1:Int, bl2:Int
 				
-		xx1 = x-1
-		yy1 = y-(height-1)
+		xx1 = Floor(x)-1
+		yy1 = Floor(y)-(height-1)
 		
 		mx1 = xx1/64 
 		my1 = yy1/64
 		
-		yy2 = y
+		yy2 = Floor(y)
 
 		my2 = (yy2/64)
 
@@ -210,13 +212,13 @@ Type tentity
 		Local xx2:Int, yy2:Int, mx2:Int, my2:Int	
 		Local bl1:Int, bl2:Int
 				
-		xx1 = x+width
-		yy1 = y-(height-1)
+		xx1 = Ceil(x)+width
+		yy1 = Ceil(y)-(height-1)
 		
 		mx1 = xx1/64 
 		my1 = yy1/64
 		
-		yy2 = y
+		yy2 = Floor(y)
 
 		my2 = (yy2/64)
 
@@ -226,7 +228,7 @@ Type tentity
 			If bl1 <> 1 Or bl2 <> 1
 				If reset
 					If xac>0 xac = 0
-					x = (((x/64)+1)*64)-width
+					x = (((Floor(x)/64))*64)'-(width+1)
 				EndIf
 				Return False
 			EndIf	
@@ -244,13 +246,13 @@ Type tentity
 		Local xx2:Int, yy2:Int, mx2:Int, my2:Int	
 		Local bl1:Int, bl2:Int
 				
-		xx1 = Int(x) 
-		yy1 = Int(y-height)
+		xx1 = Ceil(x) 
+		yy1 = Floor(y-height)
 		
 		mx1 = xx1/64 
 		my1 = (yy1/64)
 		
-		xx2 = Int(x)+(width-1)
+		xx2 = Floor(x)+(width-1)
 		yy2 = yy1
 		
 		mx2 = xx2/64
@@ -262,7 +264,7 @@ Type tentity
 			If bl1 <> 1 Or bl2 <> 1
 				If reset
 					If yac<0 yac = 0
-					y = (Int(y/64)*64)+height
+					y = (Floor(y/64)*64)+height
 				EndIf
 				Return False
 			EndIf	
@@ -284,13 +286,13 @@ Type tentity
 		
 		Local bl1:Int, bl2:Int
 				
-		xx1 = x
-		yy1 = y+1
+		xx1 = Ceil(x)
+		yy1 = Floor(y)+1
 		
 		mx1 = xx1/64 
 		my1 = (yy1/64)
 		
-		xx2 = x+(width-1)
+		xx2 = Floor(x)+(width-1)
 			
 		mx2 = xx2/64
 
@@ -300,7 +302,7 @@ Type tentity
 			If bl1 <> 1 Or bl2 <> 1	
 				If reset
 					If yac>0 yac = 0
-					y = (Int((y+1)/64)*64)-1
+					y = (Floor((y+1)/64)*64)-1
 				EndIf
 				Return False
 			EndIf
@@ -367,7 +369,7 @@ Type tentity
 				If RectsOverlap( ex, ey-(eh), ew-1, eh, e.getx(), e.gety()-(e.getheight()), e.getwidth()-1, e.getheight() ) And pvy <= (e.gety()-e.getheight())
 					falling = False
 					y = e.gety()-e.getheight()
-					If yac >= 11 PlaySound( sfx_land )
+					'If yac >= 11 PlaySound( sfx_land )
 					If yac>0 yac = 0
 					e.collision( Self, COLLIDE_ABOVE )
 				Else
@@ -400,6 +402,14 @@ Type tentity
 			EndIf	
 		Next		
 		
+	EndMethod
+	
+	Method jump:Int( yac:Float )
+		If Not ( falling Or jumping )
+			jumping = True
+			Self.yac = yac	
+			'PlaySound( sfx_jump )		
+		EndIf		
 	EndMethod
 	
 	Method draw( xoffset:Float, yoffset:Float ) Abstract
